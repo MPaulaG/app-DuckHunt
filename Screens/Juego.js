@@ -21,7 +21,7 @@ import { db } from "../Components/Config";
 
 
 export default function Juego({ navigation }) {
-  const seg = 30
+  const seg = 10
   const [tiempo, settiempo] = useState(seg);
   const [contador, setcontador] = useState(0)
   const [modalVisible, setmodalVisible] = useState(false);
@@ -246,3 +246,150 @@ btn2: {
   top: 20
 },
 });
+
+
+
+///codigo prueba
+// export default function Juego({ navigation }) {
+//   const seg = 10
+//   const [tiempo, settiempo] = useState(seg);
+//   const [contador, setcontador] = useState(0)
+//   const [modalVisible, setmodalVisible] = useState(false);
+//   const [patos, setpatos] = useState(0);
+  
+//   ////INICIO TEMPORIZADOR//////
+//   useEffect(() => {
+//     const temporizador = setInterval(() => {
+//       settiempo((tiempoAnterior) => {
+//         if (tiempoAnterior == 1) {
+//           clearInterval(temporizador); //detiene el temporizador
+//         }
+//         return tiempoAnterior - 1;
+//       });
+//     }, 1000);
+//   }, []);
+
+//   function contar(){
+//     setcontador(contador+1)
+//   }
+
+//   useEffect(() => {
+//     if (tiempo === 0) {
+//       setpatos(contador);
+//       setmodalVisible(true);
+//       puntuacion()
+//       setcontador(0)
+//       reiniciarT()
+//     }
+//   }, [tiempo]);
+
+//   function reiniciarT(){
+//     settiempo(seg);
+//   }
+
+//   function reinciar(){
+//     setmodalVisible(false);
+//   }
+
+//   /////Guardar en firebase/////
+//   function puntuacion(){
+//     const jugador="pepe34"
+//     set(ref(db, "puntuacion/" + jugador), {
+//      nick:jugador,
+//      puntaje: contador
+//     });
+//   }
+
+//   function logout() {
+//     const app = initializeApp(firebaseConfig);
+//     const auth = getAuth(app);
+//     signOut(auth)
+//       .then(() => {
+//         navigation.navigate("Login");
+//       })
+//       .catch((error) => {
+//         Alert.alert("Error al cerrar sesión");
+//       });
+//   }
+
+//   return (
+//     <ImageBackground
+//       source={require("../assets/Stage01.png")}
+//       style={styles.ImageBackground}
+//     >
+//       <View>
+//         <Text>{"\n"}</Text>
+//         <View style={styles.fila}>
+//           <Image
+//             style={styles.imgLives}
+//             source={require("../assets/lives.png")}
+//           />
+//           <Image
+//             style={styles.imgLives}
+//             source={require("../assets/lives.png")}
+//           />
+//           <Image
+//             style={styles.imgLives}
+//             source={require("../assets/lives.png")}
+//           />
+//           <Image
+//             style={styles.imgLives}
+//             source={require("../assets/lives.png")}
+//           />
+//           <Image
+//             style={styles.imgLives}
+//             source={require("../assets/lives.png")}
+//           />
+//           <Text style={styles.textScore}>   Score:</Text>
+//           <Text style={styles.textTemp}> {contador}</Text>
+//           <Text style={styles.textScore}>   Time:</Text>
+//           <Text style={styles.textTemp}> {tiempo}</Text>
+//         </View>
+        
+
+//         <TouchableOpacity style={styles.btn1} onPress={() => logout()}>
+//           <Text style={styles.txtBtn1}>Salir</Text>
+//         </TouchableOpacity>
+//       </View>
+//       <Pato presionar={contar}  />
+//       <Modal
+//           visible={modalVisible}
+//           // onBackdropPress={() => setModalVisible(false)}
+//           animationType="fade"
+//           transparent={true}
+//           style={styles.modalContainer}
+//         >
+//           <View style={styles.modal}>
+//             <Image style={styles.imgGO} source={require("../assets/gameover.png")} />
+//             <Text style={styles.txtResultado}>Usted ha cazado: {patos} patos</Text>
+
+//             <View style={styles.fila}>
+//             <TouchableOpacity style={styles.btn2} onPress={() => reiniciar()}>
+//               <Text style={styles.txtBtn1}>Reiniciar</Text>
+//             </TouchableOpacity>
+
+//             <Text>{"\n"}</Text>
+//             <Text>{"\n"}</Text>
+
+//             <TouchableOpacity style={styles.btn2} onPress={() => logout()}>
+//               <Text style={styles.txtBtn1}>Salir</Text>
+//             </TouchableOpacity>
+//             </View>
+            
+
+//             <TouchableOpacity
+//               onPress={() => {
+//                 // Acción al presionar el botón 2
+//                 setModalVisible(false);
+//               }}
+//             >
+//             </TouchableOpacity>
+            
+//           </View>
+          
+//         </Modal>
+        
+//     </ImageBackground>
+//     
+//   );
+// }
