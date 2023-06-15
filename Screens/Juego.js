@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   Button,
+  Modal,
   Alert,
   Image,
   ImageBackground,
@@ -10,13 +11,21 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getAuth, signOut } from "firebase/auth";
-
+import { ref,  set } from "firebase/database";
 import { firebaseConfig } from "../Components/Config";
 import { initializeApp } from "firebase/app";
 import Pato from "../Components/Pato";
+import { db } from "../Components/Config";
+
+
 
 export default function Juego({ navigation }) {
-  const [tiempo, settiempo] = useState(10);
+  const [tiempo, settiempo] = useState(30);
+  const [contador, setcontador] = useState(0)
+  const [modalVisible, setmodalVisible] = useState(false);
+  const [patos, setpatos] = useState(0);
+  const seg = 30
+  const [Tiempo, setTiempo] = useState (seg)
 
   ////INICIO TEMPORIZADOR//////
   useEffect(() => {
@@ -37,11 +46,50 @@ export default function Juego({ navigation }) {
 
   useEffect(() => {
     if (tiempo === 0) {
-      Alert.alert("GAME OVER!!", "Su puntuacion es: ");
-      settiempo(10);
+      setpatos(contador);
+      setmodalVisible(true);
+      //Alert.alert("GAME OVER!!", "Su puntuacion es: " + contador);
+      settiempo(30);
+      //Enviar puntuaciona firebase
+      puntuacion()
+      setcontador(0)
     }
   }, [tiempo]);
   ////////FIN TEMPORIZADOR/////////
+
+
+  ///reiniciar temporizador///
+  useEffect(() => {
+    if (Tiempo === 0) {
+        setTiempo(seg);
+    }
+    }, [Tiempo]);
+
+  function contar(){
+    setcontador(contador+1)
+  }
+
+  function reiniciar(){
+  
+    setmodalVisible(false);
+    settiempo(30);
+
+  }
+
+  /////Guardar en firebase/////
+  function puntuacion(){
+    const jugador="pepe34"
+    set(ref(db, "puntuacion/" + jugador), {
+     nick:jugador,
+     puntaje: contador
+    });
+
+    // set(ref(db, "puntuacion/" + nick), {
+    //   nick:nick,
+    //   puntaje: contador
+    //  });
+
+  }
 
   function logout() {
     const app = initializeApp(firebaseConfig);
@@ -85,17 +133,56 @@ export default function Juego({ navigation }) {
             source={require("../assets/lives.png")}
           />
           <Text style={styles.textScore}>   Score:</Text>
-          <Text style={styles.textScore}> </Text>
+          <Text style={styles.textTemp}> {contador}</Text>
           <Text style={styles.textScore}>   Time:</Text>
           <Text style={styles.textTemp}> {tiempo}</Text>
         </View>
+        
 
         <TouchableOpacity style={styles.btn1} onPress={() => logout()}>
           <Text style={styles.txtBtn1}>Salir</Text>
         </TouchableOpacity>
       </View>
-      <Pato />
+      <Pato presionar={contar}  />
+      <Modal
+          visible={modalVisible}
+          // onBackdropPress={() => setModalVisible(false)}
+          animationType="fade"
+          transparent={true}
+          style={styles.modalContainer}
+        >
+          <View style={styles.modal}>
+            <Image style={styles.imgGO} source={require("../assets/gameover.png")} />
+            <Text style={styles.txtResultado}>Usted ha cazado: {patos} patos</Text>
+
+            <View style={styles.fila}>
+            <TouchableOpacity style={styles.btn2} onPress={() => reiniciar()}>
+              <Text style={styles.txtBtn1}>Reiniciar</Text>
+            </TouchableOpacity>
+
+            <Text>{"\n"}</Text>
+            <Text>{"\n"}</Text>
+
+            <TouchableOpacity style={styles.btn2} onPress={() => logout()}>
+              <Text style={styles.txtBtn1}>Salir</Text>
+            </TouchableOpacity>
+            </View>
+            
+
+            <TouchableOpacity
+              onPress={() => {
+                // Acción al presionar el botón 2
+                setModalVisible(false);
+              }}
+            >
+            </TouchableOpacity>
+            
+          </View>
+          
+        </Modal>
+        
     </ImageBackground>
+    
   );
 }
 
@@ -134,5 +221,34 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontStyle: "italic",
     backgroundColor: "#00ff00",
+    
   },
+  modal: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    // flex: 1,
+    // backgroundColor: 'rgba(0, 0, 0, 0.)',
+    justifyContent: "center",
+    alignItems: "center",
+  },
+imgGO: {
+  width: 400,
+  height: 300,
+  alignSelf: "center",
+},
+txtResultado:{
+  fontWeight: 'bold'
+},
+btn2: {
+  backgroundColor: "#00ff00",
+  width: "95%",
+  height: "15%",
+  borderRadius: 15,
+  alignContent: 'center',
+  top: 20
+},
 });

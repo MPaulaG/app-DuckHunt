@@ -18,6 +18,8 @@ import { db } from "../Components/Config";
 import { ref, remove, set } from "firebase/database";
 import { onValue } from "firebase/database";
 
+
+
 export default function Registro({ navigation }) {
   const [nombre, setnombre] = useState("");
   const [apellido, setapellido] = useState("");
@@ -145,6 +147,7 @@ export default function Registro({ navigation }) {
             </View>
           )}
         />
+
       </View>
     </ImageBackground>
   );
