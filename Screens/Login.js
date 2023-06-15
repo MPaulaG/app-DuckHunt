@@ -82,6 +82,7 @@ export default function Login({ navigation }) {
         <TextInput
           style={styles.input1}
           placeholder="Ingrese su contraseña"
+          secureTextEntry={true}
           onChangeText={(pass) => setpass(pass)}
           value={pass}
         />

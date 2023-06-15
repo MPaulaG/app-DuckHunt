@@ -1,3 +1,4 @@
+
 import {
   View,
   StyleSheet,
@@ -20,12 +21,15 @@ import { db } from "../Components/Config";
 
 
 export default function Juego({ navigation }) {
-  const [tiempo, settiempo] = useState(30);
+  const seg = 30
+  const [tiempo, settiempo] = useState(seg);
   const [contador, setcontador] = useState(0)
   const [modalVisible, setmodalVisible] = useState(false);
   const [patos, setpatos] = useState(0);
-  const seg = 30
-  const [Tiempo, setTiempo] = useState (seg)
+  
+ 
+  //verifica que el tiempo llega a 0 y se reinicie en 30 seg
+ 
 
   ////INICIO TEMPORIZADOR//////
   useEffect(() => {
@@ -49,7 +53,7 @@ export default function Juego({ navigation }) {
       setpatos(contador);
       setmodalVisible(true);
       //Alert.alert("GAME OVER!!", "Su puntuacion es: " + contador);
-      settiempo(30);
+      settiempo(seg);
       //Enviar puntuaciona firebase
       puntuacion()
       setcontador(0)
@@ -57,22 +61,12 @@ export default function Juego({ navigation }) {
   }, [tiempo]);
   ////////FIN TEMPORIZADOR/////////
 
-
-  ///reiniciar temporizador///
-  useEffect(() => {
-    if (Tiempo === 0) {
-        setTiempo(seg);
-    }
-    }, [Tiempo]);
-
   function contar(){
     setcontador(contador+1)
   }
 
   function reiniciar(){
-  
     setmodalVisible(false);
-    settiempo(30);
 
   }
 
