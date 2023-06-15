@@ -21,7 +21,7 @@ import { db } from "../Components/Config";
 
 
 export default function Juego({ navigation }) {
-  const seg = 10
+  const seg = 30
   const [tiempo, settiempo] = useState(seg);
   const [contador, setcontador] = useState(0)
   const [modalVisible, setmodalVisible] = useState(false);
